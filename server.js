@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const path = require("path");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
-const twilio = require("twilio");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,12 +16,9 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log("Connected to NSF Clinic MongoDB successfully"))
   .catch(err => console.error("MongoDB connection error:", err));
 
-// Twilio Client Setup
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioClient = accountSid && authToken ? new twilio(accountSid, authToken) : null;
-
-// Clinic ka official WhatsApp number
+// Meta WhatsApp Cloud API Credentials (Railway Variables)
+const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
+const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 const CLINIC_WHATSAPP_NUMBER = process.env.CLINIC_WHATSAPP_NUMBER || "+923305934059";
 
 const appointmentSchema = new mongoose.Schema({
@@ -112,12 +108,33 @@ app.post("/api/appointments", async (req, res) => {
       status: "Pending"
     });
 
-    // 1. Save Appointment to Database / Dashboard
+    // 1. Save Appointment to Database
     await newAppointment.save();
 
-    // 2. Send WhatsApp & Notifications via Twilio
-    if (twilioClient) {
+    // 2. Send WhatsApp Notifications via Meta Cloud API
+    if (WHATSAPP_TOKEN && PHONE_NUMBER_ID) {
       try {
+        const sendMetaMessage = async (recipientPhone, messageText) => {
+          const formattedPhone = recipientPhone.replace(/[^0-9]/g, "");
+          
+          const response = await fetch(`https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${WHATSAPP_TOKEN}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              messaging_product: "whatsapp",
+              to: formattedPhone,
+              type: "text",
+              text: { body: messageText }
+            })
+          });
+          const data = await response.json();
+          if (!response.ok) console.error("Meta API Error:", data);
+        };
+
+        // Patient Confirmation Message
         const patientMessage = 
 `🏥 NSF Pakistan (Prof. Dr. Shakil Jehangir Malik)
 
@@ -132,12 +149,9 @@ Your appointment has been successfully booked!
 Helpline: +92 330 5934059
 Thank you for choosing NSF Pakistan!`;
 
-        await twilioClient.messages.create({
-          body: patientMessage,
-          from: process.env.TWILIO_WHATSAPP_FROM || 'whatsapp:+14155238886',
-          to: `whatsapp:${phone}`
-        });
+        await sendMetaMessage(phone, patientMessage);
 
+        // Clinic Notification Alert Message
         const clinicAlertMessage = 
 `🔔 New Appointment Alert - NSF Clinic
 
@@ -146,18 +160,13 @@ A new booking has been received!
 👤 Patient Name: ${name}
 📞 Phone: ${phone}
 🗓️ Date & Time: ${date} at ${time}
-💳 Payment Method: ${newAppointment.paymentMethod}
-`;
+💳 Payment Method: ${newAppointment.paymentMethod}`;
 
-        await twilioClient.messages.create({
-          body: clinicAlertMessage,
-          from: process.env.TWILIO_WHATSAPP_FROM || 'whatsapp:+14155238886',
-          to: `whatsapp:${CLINIC_WHATSAPP_NUMBER}`
-        });
+        await sendMetaMessage(CLINIC_WHATSAPP_NUMBER, clinicAlertMessage);
 
-        console.log(`WhatsApp notifications sent successfully for ID: ${uniqueId}`);
-      } catch (whatsappErr) {
-        console.error('WhatsApp message error:', whatsappErr.message);
+        console.log(`Meta WhatsApp notifications sent successfully for ID: ${uniqueId}`);
+      } catch (metaErr) {
+        console.error('Meta WhatsApp message error:', metaErr.message);
       }
     }
 

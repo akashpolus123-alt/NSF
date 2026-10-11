@@ -225,7 +225,7 @@
 
                 <button type="submit" class="submit-btn">Confirm & Submit Appointment</button>
             </form>
-            <p id="responseMsg"></p>
+            <p id="responseMsg" style="margin-top: 15px; font-weight: bold; text-align: center;"></p>
         </div>
 
     </main>
@@ -325,6 +325,62 @@
                 return true;
             }
         }
+
+        // Booking Form Submission Handler
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('patientName').value;
+            const phone = document.getElementById('patientPhone').value;
+            const dob = document.getElementById('patientDob').value;
+            const gender = document.getElementById('patientGender').value;
+            const date = document.getElementById('appointmentDate').value;
+            const consultationType = document.getElementById('consultationType').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const transactionId = document.getElementById('transactionId').value;
+            const time = document.getElementById('appointmentTime').value;
+
+            const symptoms = [];
+            document.querySelectorAll('#symptomGrid .symptom-pill.selected').forEach(pill => {
+                symptoms.push(pill.innerText.trim());
+            });
+
+            const requestData = {
+                name,
+                phone,
+                dob,
+                gender,
+                date,
+                type: consultationType,
+                paymentMethod,
+                transactionId,
+                time,
+                problem: symptoms.join(', ')
+            };
+
+            try {
+                const response = await fetch('/api/appointments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+                const result = await response.json();
+
+                const responseMsg = document.getElementById('responseMsg');
+                if (response.ok && result.success) {
+                    responseMsg.style.color = 'green';
+                    responseMsg.innerText = result.message + " Appointment ID: " + result.appointment.id;
+                    alert("Appointment kamyaabi se book ho gayi hai!");
+                    setTimeout(() => window.location.reload(), 3000);
+                } else {
+                    responseMsg.style.color = 'red';
+                    responseMsg.innerText = result.message || "Kuch kharabi ho gayi hai.";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server connection error!");
+            }
+        });
     </script>
 </body>
 </html>
