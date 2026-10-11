@@ -22,7 +22,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = accountSid && authToken ? new twilio(accountSid, authToken) : null;
 
-// Clinic ka official WhatsApp number (Environment variable ya yahan direct dal sakte hain)
+// Clinic ka official WhatsApp number
 const CLINIC_WHATSAPP_NUMBER = process.env.CLINIC_WHATSAPP_NUMBER || "+923305934059";
 
 const appointmentSchema = new mongoose.Schema({
@@ -88,7 +88,10 @@ app.post("/api/appointments", async (req, res) => {
     const platformCommission = 100;
     const clinicShare = advancePaid - platformCommission;
 
-    const uniqueId = "APT-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+    // Sequential ID Generation: NSF-00001, NSF-00002, etc.
+    const totalCount = await Appointment.countDocuments();
+    const nextNum = totalCount + 1;
+    const uniqueId = "NSF-" + String(nextNum).padStart(5, '0');
 
     const newAppointment = new Appointment({
       id: uniqueId,
@@ -115,7 +118,6 @@ app.post("/api/appointments", async (req, res) => {
     // 2. Send WhatsApp & Notifications via Twilio
     if (twilioClient) {
       try {
-        // A. Patient ke liye confirmation message
         const patientMessage = 
 `🏥 NSF Pakistan (Prof. Dr. Shakil Jehangir Malik)
 
@@ -136,7 +138,6 @@ Thank you for choosing NSF Pakistan!`;
           to: `whatsapp:${phone}`
         });
 
-        // B. Clinic / Receptionist ke number ke liye notification alert
         const clinicAlertMessage = 
 `🔔 New Appointment Alert - NSF Clinic
 
@@ -145,7 +146,7 @@ A new booking has been received!
 👤 Patient Name: ${name}
 📞 Phone: ${phone}
 🗓️ Date & Time: ${date} at ${time}
-💳 Payment / TID Method: ${newAppointment.paymentMethod}
+💳 Payment Method: ${newAppointment.paymentMethod}
 `;
 
         await twilioClient.messages.create({
@@ -154,7 +155,7 @@ A new booking has been received!
           to: `whatsapp:${CLINIC_WHATSAPP_NUMBER}`
         });
 
-        console.log(`WhatsApp notifications sent successfully to Patient and Clinic!`);
+        console.log(`WhatsApp notifications sent successfully for ID: ${uniqueId}`);
       } catch (whatsappErr) {
         console.error('WhatsApp message error:', whatsappErr.message);
       }
@@ -231,7 +232,7 @@ app.delete('/api/appointments/:id', async (req, res) => {
         const deletedAppt = await Appointment.findOneAndDelete({ id: appointmentId });
         
         if (!deletedAppt) {
-            return res.status(404).json({ success: false, number: 'Appointment nahi mili.' });
+            return res.status(404).json({ success: false, message: 'Appointment nahi mili.' });
         }
 
         res.json({ success: true, message: 'Appointment kamyaabi se delete ho chuki hai.' });
@@ -256,7 +257,7 @@ app.get("/api/finance-summary", async (req, res) => {
   }
 });
 
-app.get("/api/hr-staff", async (req, number) => {
+app.get("/api/hr-staff", async (req, res) => {
   try {
     let staffList = await Staff.find();
     if (staffList.length === 0) {
