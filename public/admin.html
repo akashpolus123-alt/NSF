@@ -259,7 +259,7 @@
             appointments.forEach((appt, index) => {
                 let tr = document.createElement('tr');
                 
-                let statusBadge = <span class="badge badge-pending">${appt.status || 'Pending'}</span>;
+                let statusBadge = `<span class="badge badge-pending">${appt.status || 'Pending'}</span>`;
                 if (appt.status === 'Arrived') {
                     statusBadge = <span class="badge badge-confirmed">Arrived</span>;
                 } else if (appt.status === 'Completed') {
