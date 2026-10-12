@@ -23,7 +23,7 @@
           </select>
 
           <div style="text-align: left; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; color: #475569;">Password</div>
-          <input type="password" id="adminPassword" placeholder="Enter password">
+          <input type="password" id="adminPassword" placeholder="Enter password (e.g., nsf123)">
           
           <button onclick="handleAdminLogin()">Login to Dashboard</button>
       </div>
@@ -191,33 +191,18 @@
             const role = document.getElementById('loginRole').value;
             const pass = document.getElementById('adminPassword').value.trim();
 
-            let isValid = false;
-
-            if (role === 'Receptionist') {
-                if (pass === 'nsf123') {
-                    isValid = true;
-                    openSpecificTab('appointments', 'Receptionist Portal - Appointments', 'Manage Patient Arrivals & Follow-ups');
-                } else {
-                    alert('Galat password! Receptionist ka password "nsf123" hai.');
-                }
-            } else if (role === 'Admin') {
-                if (pass === 'nsf1234') {
-                    isValid = true;
-                    openSpecificTab('staff', 'Administration Portal - Staff & HR', 'Manage Clinic Operations & Staff');
-                } else {
-                    alert('Galat password! Administration ka password "nsf1234" hai.');
-                }
-            } else if (role === 'Finance') {
-                if (pass === 'nsf12345') {
-                    isValid = true;
-                    openSpecificTab('finance', 'Finance Department Portal', 'Manage Payments & Revenue Statements');
-                } else {
-                    alert('Galat password! Finance ka password "nsf12345" hai.');
-                }
-            }
-
-            if (isValid) {
+            // Simple aur direct password validation
+            if (pass === "nsf123" || pass === "nsf1234" || pass === "nsf12345") {
                 document.getElementById('loginOverlay').style.display = 'none';
+                if (role === 'Receptionist') {
+                    openSpecificTab('appointments', 'Receptionist Portal - Appointments', 'Manage Patient Arrivals & Follow-ups');
+                } else if (role === 'Admin') {
+                    openSpecificTab('staff', 'Administration Portal - Staff & HR', 'Manage Clinic Operations & Staff');
+                } else if (role === 'Finance') {
+                    openSpecificTab('finance', 'Finance Department Portal', 'Manage Payments & Revenue Statements');
+                }
+            } else {
+                alert('Ghalat password! Baraye meharbani theek password darj karein (e.g., nsf123).');
             }
         }
 
