@@ -4,71 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal - NSF Pakistan</title>
+    <!-- CSS File Link -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Login Overlay ko Solid aur Secure banane ke liye taake pichla data na dikhe */
-        #loginOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f766e; /* Solid background color */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            width: 90%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .login-box h2 {
-            margin-bottom: 5px;
-            font-size: 20px;
-            color: #1e293b;
-        }
-        .login-box p {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-        .login-box select,
-        .login-box input {
-            width: 100%;
-            padding: 11px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            outline: none;
-            background: #f8fafc;
-        }
-        .login-box button {
-            width: 100%;
-            padding: 12px;
-            background: #0f766e;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-        .login-box button:hover {
-            background: #115e59;
-        }
-    </style>
 </head>
 <body>
 
-  <!-- Login Overlay (Solid Background with Auto-selected Receptionist Role) -->
+  <!-- Login Overlay -->
   <div id="loginOverlay">
       <div class="login-box">
           <h2>Clinic Portal Login</h2>
@@ -77,7 +18,8 @@
           <div style="text-align: left; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; color: #475569;">Select Role</div>
           <select id="loginRole">
               <option value="Receptionist" selected>Receptionist Desk</option>
-              <option value="Admin">Administrator</option>
+              <option value="Admin">Administration</option>
+              <option value="Finance">Finance Department</option>
           </select>
 
           <div style="text-align: left; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; color: #475569;">Password</div>
@@ -109,17 +51,17 @@
     <main>
         <div class="header" style="display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; border-radius:10px; border:1px solid var(--border-color); margin-bottom:15px;">
             <div>
-                <h2>NSF Clinic Management Portal</h2>
-                <p style="font-size:11px; color:#64748b;">Professorial Services & Operations Dashboard</p>
+                <h2 id="portalTitle">NSF Clinic Management Portal</h2>
+                <p style="font-size:11px; color:#64748b;" id="portalSubtitle">Professorial Services & Operations Dashboard</p>
             </div>
             <button class="logout-btn" onclick="handleLogout()">Logout System</button>
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('appointments')">Appointments</button>
-            <button class="tab-btn" onclick="switchTab('finance')">Finance</button>
-            <button class="tab-btn" onclick="switchTab('staff')">Staff & HR</button>
+        <div class="nav-tabs" id="navTabsContainer">
+            <button class="tab-btn active" onclick="switchTab('appointments')" id="btnTabAppt">Appointments</button>
+            <button class="tab-btn" onclick="switchTab('finance')" id="btnTabFinance">Finance</button>
+            <button class="tab-btn" onclick="switchTab('staff')" id="btnTabStaff">Staff & HR</button>
         </div>
 
         <!-- Tab 1: Appointments -->
@@ -136,7 +78,7 @@
             </div>
 
             <div class="admin-controls-bar">
-                <input type="text" id="searchApptInput" class="search-input" placeholder="Search by name, phone or ID..." onkeyup="filterAppointments()" style="max-width: 100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
+                <input type="text" id="searchApptInput" class="search-input" placeholder="Search by name, phone or ID..." onkeyup="filterAppointments()" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; outline:none;">
                 <button class="btn-export" onclick="exportReport('Appointments')">📥 Export Report</button>
             </div>
 
@@ -153,7 +95,7 @@
                         </tr>
                     </thead>
                     <tbody id="appointmentsTableBody">
-                        <!-- Dynamic data will load here -->
+                        <!-- Dynamic data -->
                     </tbody>
                 </table>
             </div>
@@ -230,6 +172,7 @@
         &copy; 2026 NSF Pakistan (Prof. Dr. Shakil Jehangir Malik). All rights reserved.
     </footer>
 
+    <!-- JavaScript Logic -->
     <script>
         window.onload = function() {
             loadAdminAppointments();
@@ -245,19 +188,65 @@
         }
 
         function handleAdminLogin() {
-            const pass = document.getElementById('adminPassword').value;
-            if (pass.trim() !== '') {
-                // Login successful, overlay chup jaye ga
-                document.getElementById('loginOverlay').style.display = 'none';
-            } else {
-                alert('Please enter password');
+            const role = document.getElementById('loginRole').value;
+            const pass = document.getElementById('adminPassword').value.trim();
+
+            let isValid = false;
+
+            if (role === 'Receptionist') {
+                if (pass === 'nsf123') {
+                    isValid = true;
+                    openSpecificTab('appointments', 'Receptionist Portal - Appointments', 'Manage Patient Arrivals & Follow-ups');
+                } else {
+                    alert('Galat password! Receptionist ka password "nsf123" hai.');
+                }
+            } else if (role === 'Admin') {
+                if (pass === 'nsf1234') {
+                    isValid = true;
+                    openSpecificTab('staff', 'Administration Portal - Staff & HR', 'Manage Clinic Operations & Staff');
+                } else {
+                    alert('Galat password! Administration ka password "nsf1234" hai.');
+                }
+            } else if (role === 'Finance') {
+                if (pass === 'nsf12345') {
+                    isValid = true;
+                    openSpecificTab('finance', 'Finance Department Portal', 'Manage Payments & Revenue Statements');
+                } else {
+                    alert('Galat password! Finance ka password "nsf12345" hai.');
+                }
             }
+
+            if (isValid) {
+                document.getElementById('loginOverlay').style.display = 'none';
+            }
+        }
+
+        function openSpecificTab(tabName, titleText, subtitleText) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.style.display = 'none');
+
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            if(tabName === 'appointments') {
+                document.getElementById('btnTabAppt').style.display = 'inline-block';
+                document.getElementById('btnTabAppt').classList.add('active');
+            } else if(tabName === 'finance') {
+                document.getElementById('btnTabFinance').style.display = 'inline-block';
+                document.getElementById('btnTabFinance').classList.add('active');
+            } else if(tabName === 'staff') {
+                document.getElementById('btnTabStaff').style.display = 'inline-block';
+                document.getElementById('btnTabStaff').classList.add('active');
+            }
+
+            document.getElementById('portalTitle').innerText = titleText;
+            document.getElementById('portalSubtitle').innerText = subtitleText;
         }
 
         function handleLogout() {
             document.getElementById('loginOverlay').style.display = 'flex';
             document.getElementById('adminPassword').value = '';
-            document.getElementById('loginRole').value = 'Receptionist'; // Wapis default receptionist select ho jaye ga
+            document.getElementById('loginRole').value = 'Receptionist';
+            document.querySelectorAll('.tab-btn').forEach(el => el.style.display = 'inline-block');
         }
 
         function loadAdminAppointments() {
@@ -285,7 +274,7 @@
 
                 let actionContent = '';
                 if (appt.status !== 'Arrived' && appt.status !== 'Completed') {
-                    actionContent = <button class="btn-action btn-done" style="background:#0284c7; color:white;" onclick="confirmArrival(${index})">✅ Confirm Arrival</button>;
+                    actionContent = <button class="btn-action btn-done" style="background:#0284c7; color:white; padding:6px 10px; border:none; border-radius:6px; cursor:pointer;" onclick="confirmArrival(${index})">✅ Confirm Arrival</button>;
                 } else {
                     let followUpDate = appt.followUpDate || '';
                     let reminderDays = appt.reminderDays || '1';
@@ -299,9 +288,9 @@
                                     <option value="1" ${reminderDays==='1'?'selected':''}>1 Day Before</option>
                                     <option value="2" ${reminderDays==='2'?'selected':''}>2 Days Before</option>
                                 </select>
-                                <button class="btn-action btn-done" style="font-size:10px; padding:4px 8px;" onclick="saveFollowUpReminder(${index})">Set Reminder</button>
+                                <button class="btn-action btn-done" style="font-size:10px; padding:4px 8px; background:#0f766e; color:white; border:none; border-radius:4px; cursor:pointer;" onclick="saveFollowUpReminder(${index})">Set</button>
                             </div>
-                            ${appt.followUpDate ? <small style="color:#0f766e; font-weight:bold;">🔔 Follow-up: ${appt.followUpDate} (${appt.reminderDays}d prior)</small> : ''}
+                            ${appt.followUpDate ? <small style="color:#0f766e; font-weight:bold;">🔔 Follow-up: ${appt.followUpDate}</small> : ''}
                         </div>
                     `;
                 }
