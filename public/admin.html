@@ -5,15 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal - NSF Pakistan</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Login Overlay ko Solid aur Secure banane ke liye taake pichla data na dikhe */
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f766e; /* Solid background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .login-box h2 {
+            margin-bottom: 5px;
+            font-size: 20px;
+            color: #1e293b;
+        }
+        .login-box p {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .login-box select,
+        .login-box input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            outline: none;
+            background: #f8fafc;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .login-box button:hover {
+            background: #115e59;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Login Overlay (Hidden once logged in) -->
+  <!-- Login Overlay (Solid Background with Auto-selected Receptionist Role) -->
   <div id="loginOverlay">
       <div class="login-box">
-          <h2>Admin Login</h2>
-          <p>NSF Clinic Management Portal</p>
-          <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+          <h2>Clinic Portal Login</h2>
+          <p>NSF Pakistan Management System</p>
+          
+          <div style="text-align: left; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; color: #475569;">Select Role</div>
+          <select id="loginRole">
+              <option value="Receptionist" selected>Receptionist Desk</option>
+              <option value="Admin">Administrator</option>
+          </select>
+
+          <div style="text-align: left; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; color: #475569;">Password</div>
+          <input type="password" id="adminPassword" placeholder="Enter password">
+          
           <button onclick="handleAdminLogin()">Login to Dashboard</button>
       </div>
   </div>
@@ -38,10 +107,10 @@
 
     <!-- Main Content -->
     <main>
-        <div class="header">
+        <div class="header" style="display:flex; justify-content:space-between; align-items:center; background:white; padding:15px; border-radius:10px; border:1px solid var(--border-color); margin-bottom:15px;">
             <div>
                 <h2>NSF Clinic Management Portal</h2>
-                <p>Professorial Services & Operations Dashboard</p>
+                <p style="font-size:11px; color:#64748b;">Professorial Services & Operations Dashboard</p>
             </div>
             <button class="logout-btn" onclick="handleLogout()">Logout System</button>
         </div>
@@ -58,7 +127,7 @@
             <div class="cards-grid">
                 <div class="card">
                     <h4>Total Appointments</h4>
-                    <p id="totalAppointmentsCount">7</p>
+                    <p id="totalAppointmentsCount">0</p>
                 </div>
                 <div class="card">
                     <h4>Active Revenue</h4>
@@ -67,7 +136,7 @@
             </div>
 
             <div class="admin-controls-bar">
-                <input type="text" id="searchApptInput" class="search-input" placeholder="Search by name, phone or ID..." onkeyup="filterAppointments()" style="max-width: 100%;">
+                <input type="text" id="searchApptInput" class="search-input" placeholder="Search by name, phone or ID..." onkeyup="filterAppointments()" style="max-width: 100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
                 <button class="btn-export" onclick="exportReport('Appointments')">📥 Export Report</button>
             </div>
 
@@ -80,18 +149,11 @@
                             <th>Phone</th>
                             <th>Date & Time</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Action / Follow-up</th>
                         </tr>
                     </thead>
                     <tbody id="appointmentsTableBody">
-                        <tr>
-                            <td><strong>APT-1791312970113-9897</strong></td>
-                            <td>Akash Polous</td>
-                            <td>03131519835</td>
-                            <td>2026-06-06 <br><small>10:30 AM</small></td>
-                            <td><span class="badge badge-pending">Pending</span></td>
-                            <td><button class="btn-action btn-done" onclick="updateStatus(this)">Mark Done</button></td>
-                        </tr>
+                        <!-- Dynamic data will load here -->
                     </tbody>
                 </table>
             </div>
@@ -108,39 +170,23 @@
                     <h4>Advance Collected</h4>
                     <p>PKR 8,800</p>
                 </div>
-                <div class="card">
-                    <h4>Commission</h4>
-                    <p>PKR 500</p>
-                </div>
             </div>
-
-            <div class="admin-controls-bar">
-                <input type="text" class="search-input" placeholder="Search transactions..." style="max-width: 100%;">
-                <button class="btn-export" onclick="exportReport('Finance')">📥 Export Financial Statement</button>
-            </div>
-
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>Booking ID</th>
                             <th>Patient Name</th>
-                            <th>Consultation Type</th>
-                            <th>Amount Paid</th>
+                            <th>Type</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>APT-1791313294213-2804</td>
-                            <td>Akash polous</td>
+                            <td>APT-1791313294213</td>
+                            <td>Akash Polous</td>
                             <td>Initial</td>
                             <td><strong>PKR 2,400</strong></td>
-                        </tr>
-                        <tr>
-                            <td>APT-1791318421405-1072</td>
-                            <td>AKASH POLOUS</td>
-                            <td>Follow-up</td>
-                            <td><strong>PKR 1,600</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -151,24 +197,18 @@
         <div id="tab-staff" class="tab-content">
             <div class="cards-grid">
                 <div class="card">
-                    <h4>Total Active Staff</h4>
+                    <h4>Active Staff</h4>
                     <p>2 Members</p>
                 </div>
             </div>
-
-            <div class="admin-controls-bar">
-                <span style="font-size: 13px; color: #64748b; font-weight: 600;">Authorized Clinic Personnel</span>
-                <button class="btn-export" onclick="alert('Add staff feature triggered')">+ Add New Staff</button>
-            </div>
-
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Staff ID</th>
-                            <th>Staff Name</th>
-                            <th>Designation / Role</th>
-                            <th>Contact Phone</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Phone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -177,12 +217,6 @@
                             <td>Receptionist Desk</td>
                             <td>Front Desk</td>
                             <td>0330-5934091</td>
-                        </tr>
-                        <tr>
-                            <td><strong>STF-02</strong></td>
-                            <td>Clinic Assistant</td>
-                            <td>Medical Assistant</td>
-                            <td>0300-1234567</td>
                         </tr>
                     </tbody>
                 </table>
@@ -197,6 +231,11 @@
     </footer>
 
     <script>
+        window.onload = function() {
+            loadAdminAppointments();
+            setInterval(loadAdminAppointments, 5000);
+        };
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -208,6 +247,7 @@
         function handleAdminLogin() {
             const pass = document.getElementById('adminPassword').value;
             if (pass.trim() !== '') {
+                // Login successful, overlay chup jaye ga
                 document.getElementById('loginOverlay').style.display = 'none';
             } else {
                 alert('Please enter password');
@@ -217,14 +257,91 @@
         function handleLogout() {
             document.getElementById('loginOverlay').style.display = 'flex';
             document.getElementById('adminPassword').value = '';
+            document.getElementById('loginRole').value = 'Receptionist'; // Wapis default receptionist select ho jaye ga
         }
 
-        function updateStatus(btn) {
-            const row = btn.closest('tr');
-            const badge = row.querySelector('.badge');
-            badge.className = 'badge badge-completed';
-            badge.textContent = 'Completed';
-            btn.remove();
+        function loadAdminAppointments() {
+            const appointments = JSON.parse(localStorage.getItem('nsf_appointments')) || [];
+            const tbody = document.getElementById('appointmentsTableBody');
+            if (!tbody) return;
+
+            document.getElementById('totalAppointmentsCount').innerText = appointments.length;
+
+            if (appointments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No appointments found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            appointments.forEach((appt, index) => {
+                let tr = document.createElement('tr');
+                
+                let statusBadge = <span class="badge badge-pending">${appt.status || 'Pending'}</span>;
+                if (appt.status === 'Arrived') {
+                    statusBadge = <span class="badge badge-confirmed">Arrived</span>;
+                } else if (appt.status === 'Completed') {
+                    statusBadge = <span class="badge badge-completed">Completed</span>;
+                }
+
+                let actionContent = '';
+                if (appt.status !== 'Arrived' && appt.status !== 'Completed') {
+                    actionContent = <button class="btn-action btn-done" style="background:#0284c7; color:white;" onclick="confirmArrival(${index})">✅ Confirm Arrival</button>;
+                } else {
+                    let followUpDate = appt.followUpDate || '';
+                    let reminderDays = appt.reminderDays || '1';
+                    
+                    actionContent = `
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <span style="font-size:11px; color:#166534; font-weight:600;">✔️ Patient Arrived</span>
+                            <div style="display:flex; gap:4px; align-items:center;">
+                                <input type="date" id="fDate_${index}" value="${followUpDate}" style="padding:4px; font-size:11px; border:1px solid #cbd5e1; border-radius:4px;">
+                                <select id="rDays_${index}" style="padding:4px; font-size:11px; border:1px solid #cbd5e1; border-radius:4px;">
+                                    <option value="1" ${reminderDays==='1'?'selected':''}>1 Day Before</option>
+                                    <option value="2" ${reminderDays==='2'?'selected':''}>2 Days Before</option>
+                                </select>
+                                <button class="btn-action btn-done" style="font-size:10px; padding:4px 8px;" onclick="saveFollowUpReminder(${index})">Set Reminder</button>
+                            </div>
+                            ${appt.followUpDate ? <small style="color:#0f766e; font-weight:bold;">🔔 Follow-up: ${appt.followUpDate} (${appt.reminderDays}d prior)</small> : ''}
+                        </div>
+                    `;
+                }
+
+                tr.innerHTML = `
+                    <td><strong>${appt.bookingId}</strong></td>
+                    <td>${appt.patientName}</td>
+                    <td>${appt.phone}</td>
+                    <td>${appt.dateTime}</td>
+                    <td>${statusBadge}</td>
+                    <td>${actionContent}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function confirmArrival(index) {
+            let appointments = JSON.parse(localStorage.getItem('nsf_appointments')) || [];
+            appointments[index].status = 'Arrived';
+            localStorage.setItem('nsf_appointments', JSON.stringify(appointments));
+            loadAdminAppointments();
+        }
+
+        function saveFollowUpReminder(index) {
+            const dateInput = document.getElementById(`fDate_${index}`).value;
+            const daysInput = document.getElementById(`rDays_${index}`).value;
+
+            if (!dateInput) {
+                alert('Please select a follow-up date first.');
+                return;
+            }
+
+            let appointments = JSON.parse(localStorage.getItem('nsf_appointments')) || [];
+            appointments[index].followUpDate = dateInput;
+            appointments[index].reminderDays = daysInput;
+            appointments[index].reminderStatus = 'Scheduled';
+
+            localStorage.setItem('nsf_appointments', JSON.stringify(appointments));
+            alert('Follow-up reminder successfully saved!');
+            loadAdminAppointments();
         }
 
         function exportReport(type) {
