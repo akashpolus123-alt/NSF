@@ -310,8 +310,8 @@
         }
 
         function saveFollowUpReminder(index) {
-            const dateInput = document.getElementById(fDate_${index}).value;
-            const daysInput = document.getElementById(rDays_${index}).value;
+            const dateInput = document.getElementById(`fDate_${index}`).value;
+            const daysInput = document.getElementById(`rDays_${index}`).value;
 
             if (!dateInput) {
                 alert('Please select a follow-up date first.');
