@@ -22,10 +22,10 @@ body {
     padding-bottom: 40px;
 }
 
-/* --- Dark Header & Mobile Navigation --- */
+/* --- Dark Header & Navigation (Reference Style) --- */
 header {
     background: var(--primary);
-    padding: 8px 15px;
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,7 +41,7 @@ header {
 }
 
 .logo img {
-    height: 28px;
+    height: 30px;
     width: auto;
     object-fit: contain;
     display: block;
@@ -56,14 +56,14 @@ nav {
 nav a {
     text-decoration: none;
     color: white;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
     font-weight: 600;
     font-size: 11px;
-    padding: 4px 10px;
+    padding: 5px 10px;
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     transition: background 0.2s;
     white-space: nowrap;
 }
@@ -72,7 +72,7 @@ nav a:hover, nav a.active {
     background: var(--primary-dark);
 }
 
-/* --- Main Layout & Containers --- */
+/* --- Main Layout & Cards --- */
 main {
     max-width: 600px;
     margin: 15px auto;
@@ -83,44 +83,67 @@ main {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 14px;
-    padding: 18px;
+    padding: 16px;
     margin-bottom: 16px;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     text-align: left;
 }
 
-/* --- Hero Section --- */
-.hero {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    text-align: center;
-    padding: 16px 15px;
-    margin: 10px 12px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
+.profile-top-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
-.hero h1 {
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 3px;
-    color: #ffffff;
+.doctor-img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--primary);
+    flex-shrink: 0;
 }
 
-.hero .subtitle {
+.doctor-info h2 {
+    font-size: 13.5px;
+    color: #1e293b;
+    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.doctor-title-text {
     font-size: 11px;
-    color: #ccfbf1;
-    font-weight: 500;
-    opacity: 0.95;
-    margin: 0;
+    color: #0f766e;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
-/* --- Action Buttons Grid --- */
+.doc-badges-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.doc-badge-pill {
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    color: #0f766e;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* --- Action Buttons Grid (Call & Location) --- */
 .action-buttons-grid {
     display: flex;
     gap: 10px;
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 .action-card-btn {
@@ -143,8 +166,8 @@ main {
     font-size: 16px;
     background: var(--primary);
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,18 +184,25 @@ main {
 
 .action-title {
     display: block;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 700;
     color: #1e293b;
 }
 
 .action-subtitle {
     display: block;
-    font-size: 9.5px;
+    font-size: 10px;
     color: #64748b;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.arrow {
+    font-weight: bold;
+    color: #0f766e;
+    font-size: 12px;
+    margin-left: 4px;
 }
 
 /* --- Clinic Details Box --- */
@@ -182,7 +212,7 @@ main {
     border: 1px solid #ccfbf1;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -222,11 +252,71 @@ main {
     padding: 6px 8px;
     border-radius: 6px;
     border: 1px solid #ccfbf1;
-    font-size: 10.5px;
+    font-size: 10px;
     color: #0f766e;
 }
 
-/* --- Booking Form Inputs & Payment Box --- */
+/* --- Hope Message Box --- */
+.clinic-message {
+    background: #f0fdfa;
+    border-left: 4px solid var(--primary);
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: #334155;
+    text-align: left;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
+.clinic-message strong {
+    display: block;
+    color: #0f766e;
+    margin-bottom: 2px;
+}
+
+/* --- Achievement & Professional Cards --- */
+.achievement-card h3 {
+    font-size: 12.5px;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.achievement-card p {
+    font-size: 11px;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+/* --- Hero Section & Track / Admin Elements --- */
+.hero, .hero-track-box {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    text-align: center;
+    padding: 16px 15px;
+    margin: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
+}
+
+.hero h1, .hero-track-box h1 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 3px;
+    color: #ffffff;
+}
+
+.hero .subtitle, .hero-track-box .subtitle {
+    font-size: 11px;
+    color: #ccfbf1;
+    font-weight: 500;
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* --- Forms & Booking Inputs --- */
 .form-card h2 {
     font-size: 14px;
     color: var(--primary);
@@ -241,12 +331,13 @@ main {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.search-input-box {
     width: 100%;
-    padding: 9px 12px;
+    padding: 10px 12px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-size: 11.5px;
+    font-size: 12px;
     background: #f8fafc;
     color: var(--text-color);
     outline: none;
@@ -254,7 +345,8 @@ main {
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.search-input-box:focus {
     border-color: var(--primary);
     background: #ffffff;
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
@@ -278,47 +370,6 @@ main {
     color: #dc2626;
     font-size: 13px;
     font-weight: 700;
-}
-
-/* --- Symptom Pills (Compact & Clean) --- */
-.symptom-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    max-height: 180px;
-    overflow-y: auto;
-    border: 1px solid #e2e8f0;
-    padding: 10px;
-    border-radius: 10px;
-    background: #f8fafc;
-}
-
-.symptom-pill {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    padding: 7px 10px;
-    border-radius: 8px;
-    font-size: 11px;
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: all 0.2s;
-}
-
-.symptom-pill input {
-    margin-left: 6px;
-    accent-color: var(--primary);
-    width: 14px;
-    height: 14px;
-}
-
-.symptom-pill.selected {
-    background: #f0fdfa;
-    color: var(--primary);
-    border-color: var(--primary);
-    font-weight: 600;
 }
 
 /* --- Buttons --- */
@@ -349,16 +400,6 @@ main {
     margin-bottom: 12px;
     gap: 8px;
     flex-wrap: wrap;
-}
-
-.search-input-box {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 12px;
-    outline: none;
-    background: #ffffff;
 }
 
 .nav-tabs {
