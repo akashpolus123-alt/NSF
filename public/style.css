@@ -1,40 +1,42 @@
-/* --- Root Variables & Premium Theme --- */
+/* --- Root Variables & Base Styles --- */
 :root {
     --primary: #0f766e;
     --primary-dark: #115e59;
-    --accent: #14b8a6;
-    --border-color: #e2e8f0;
-    --bg-color: #f8fafc;
-    --text-main: #1e293b;
-    --card-bg: #ffffff;
+    --border-color: #cbd5e1;
+    --bg-color: #f1f5f9;
+    --text-color: #1e293b;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: var(--bg-color);
-    color: var(--text-main);
+    color: var(--text-color);
     line-height: 1.5;
-    padding-bottom: 30px;
-    -webkit-font-smoothing: antialiased;
+    padding-bottom: 40px;
 }
 
-/* --- Premium App Header --- */
+/* --- Dark Header & Navigation --- */
 header {
     background: var(--primary);
-    padding: 10px 14px;
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
 }
 
 .logo img {
@@ -47,85 +49,360 @@ header {
 nav {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
 
 nav a {
     text-decoration: none;
     color: white;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
     font-weight: 600;
-    font-size: 10.5px;
-    padding: 5px 9px;
-    border-radius: 20px;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 16px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: all 0.2s ease;
+    transition: background 0.2s;
+    white-space: nowrap;
 }
 
 nav a:hover, nav a.active {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--primary-dark);
 }
 
-/* --- Main Container --- */
+/* --- Main Layout & Cards --- */
 main {
-    max-width: 480px;
-    margin: 12px auto;
-    padding: 0 10px;
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 0 12px;
 }
 
-/* --- Cards Styling --- */
 .profile-section, .form-card, .achievement-card {
-    background: var(--card-bg);
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 14px;
     padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     text-align: left;
 }
 
-/* --- Track & Home Hero Banners (Compact & Clean) --- */
+.profile-top-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.doctor-img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid var(--primary);
+    flex-shrink: 0;
+}
+
+.doctor-info h2 {
+    font-size: 13.5px;
+    color: #1e293b;
+    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.doctor-title-text {
+    font-size: 11px;
+    color: #0f766e;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.doc-badges-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.doc-badge-pill {
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    color: #0f766e;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* --- Action Buttons Grid (Call & Location) --- */
+.action-buttons-grid {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 14px;
+}
+
+.action-card-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #e6f8f5;
+    border: 1px solid #99f6e4;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.action-card-btn:hover {
+    background: #ccfbf1;
+}
+
+.action-icon {
+    font-size: 16px;
+    background: var(--primary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.action-text {
+    flex-grow: 1;
+    text-align: left;
+    overflow: hidden;
+}
+
+.action-title {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.action-subtitle {
+    display: block;
+    font-size: 10px;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.arrow {
+    font-weight: bold;
+    color: #0f766e;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+/* --- Clinic Details Box --- */
+.clinic-details-box {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #ccfbf1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.08);
+}
+
+.clinic-img-container {
+    width: 42%;
+    min-height: 120px;
+    overflow: hidden;
+}
+
+.clinic-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.clinic-info-content {
+    width: 58%;
+    padding: 12px;
+    font-size: 11px;
+    color: #334155;
+    background: #fdfdfd;
+}
+
+.clinic-address {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.3;
+}
+
+.clinic-timings {
+    background: #f0fdfa;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccfbf1;
+    font-size: 10px;
+    color: #0f766e;
+}
+
+/* --- Hope Message Box --- */
+.clinic-message {
+    background: #f0fdfa;
+    border-left: 4px solid var(--primary);
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: #334155;
+    text-align: left;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
+.clinic-message strong {
+    display: block;
+    color: #0f766e;
+    margin-bottom: 2px;
+}
+
+/* --- Achievement & Professional Cards (Updated for Timing-to-Bottom Layout) --- */
+.achievement-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    text-align: left;
+    box-shadow: none;
+}
+
+.achievement-card h3 {
+    font-size: 12.5px;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.achievement-card p {
+    font-size: 11px;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+/* --- Features Footer Grid inside profile card --- */
+.features-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    margin: 12px 0;
+}
+
+.mini-feature-box {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    padding: 8px 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    font-size: 11px;
+}
+
+.mini-feature-box span {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.mini-feature-box strong {
+    display: block;
+    color: #1e293b;
+    font-size: 11px;
+}
+
+.mini-feature-box p {
+    color: #64748b;
+    margin: 0;
+    font-size: 9.5px;
+}
+
+/* --- Bottom Book Button --- */
+.book-btn-hero {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2);
+}
+
+.book-btn-hero:hover {
+    background: var(--primary-dark);
+}
+
+/* --- Hero Section & Track / Admin Elements (Locked & Preserved) --- */
 .hero, .hero-track-box {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     text-align: center;
-    padding: 14px 12px;
-    margin: 8px 10px;
+    padding: 16px 15px;
+    margin: 10px 12px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+    box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
 }
 
 .hero h1, .hero-track-box h1 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 2px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 3px;
+    color: #ffffff;
 }
 
 .hero .subtitle, .hero-track-box .subtitle {
-    font-size: 10.5px;
+    font-size: 11px;
     color: #ccfbf1;
+    font-weight: 500;
     opacity: 0.95;
     margin: 0;
 }
 
-/* --- Status Guide Box (Clean & Minimalist) --- */
+/* --- Status Legend Guide --- */
 .status-legend {
     background: #f8fafc;
-    border: 1px solid var(--border-color);
+    border: 1px solid #e2e8f0;
     padding: 10px 12px;
     border-radius: 10px;
     margin-bottom: 12px;
     font-size: 11px;
     color: #475569;
+    text-align: left;
     line-height: 1.4;
 }
 
 .status-legend strong {
     display: block;
     margin-bottom: 4px;
-    color: var(--text-main);
+    color: #1e293b;
     font-size: 11.5px;
 }
 
@@ -133,12 +410,18 @@ main {
     margin-bottom: 3px;
 }
 
-/* --- Form Headings & Inputs --- */
-.form-card h2, h2 {
-    font-size: 13px;
+/* --- Forms & Booking Inputs --- */
+.form-card h2 {
+    font-size: 14px;
     color: var(--primary);
-    margin-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #f0fdfa;
+    padding-bottom: 6px;
     font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 12px;
 }
 
 .form-group input,
@@ -150,7 +433,7 @@ main {
     border-radius: 8px;
     font-size: 12px;
     background: #f8fafc;
-    color: var(--text-main);
+    color: var(--text-color);
     outline: none;
     transition: all 0.2s ease;
 }
@@ -163,15 +446,35 @@ main {
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
 }
 
-/* --- Search & Action Buttons --- */
+.payment-box {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 11px;
+    text-align: left;
+    margin-bottom: 14px;
+}
+
+.payment-box strong {
+    color: var(--primary);
+}
+
+.highlight-amount {
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* --- Buttons --- */
 .submit-btn, .book-btn-hero, .btn-track-action {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     border: none;
     width: 100%;
-    padding: 11px;
-    border-radius: 8px;
-    font-size: 12.5px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
@@ -183,7 +486,7 @@ main {
     opacity: 0.95;
 }
 
-/* --- Result Card & Quick Action Links --- */
+/* --- Result & Error Cards --- */
 .result-card {
     background: #f8fafc;
     border: 1px solid var(--border-color);
@@ -191,6 +494,7 @@ main {
     border-radius: 10px;
     font-size: 11.5px;
     margin-top: 12px;
+    text-align: left;
 }
 
 .result-actions {
@@ -229,169 +533,29 @@ main {
     display: block;
 }
 
-/* --- Profile Details & Layout Fixes --- */
-.profile-top-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.doctor-img {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--primary);
-    flex-shrink: 0;
-}
-
-.doctor-info h2 {
-    font-size: 13px;
-    margin-bottom: 2px;
-}
-
-.doctor-title-text {
-    font-size: 10.5px;
-    color: var(--primary);
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.doc-badges-row {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-}
-
-.doc-badge-pill {
-    background: #f0fdfa;
-    border: 1px solid #ccfbf1;
-    padding: 3px 6px;
-    border-radius: 5px;
-    font-size: 9.5px;
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.action-buttons-grid {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    margin-bottom: 12px;
-}
-
-.action-card-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    background: #f0fdfa;
-    border: 1px solid #99f6e4;
-    border-radius: 10px;
-    padding: 8px;
-    text-decoration: none;
-}
-
-.action-icon {
-    font-size: 14px;
-    background: var(--primary);
-    color: white;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    margin-right: 6px;
-    flex-shrink: 0;
-}
-
-.action-title {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-main);
-}
-
-.action-subtitle {
-    display: block;
-    font-size: 9.5px;
-    color: #64748b;
-}
-
-/* --- Clinic Details Box --- */
-.clinic-details-box {
-    width: 100%;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 12px;
-}
-
-.clinic-img-container {
-    width: 100%;
-    height: 130px;
-    background: #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.clinic-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.clinic-info-content {
-    padding: 12px;
-    font-size: 11px;
-    color: #334155;
-}
-
-.clinic-address {
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: var(--text-main);
-}
-
-.clinic-timings {
-    background: #f0fdfa;
-    padding: 6px 8px;
-    border-radius: 6px;
-    border: 1px solid #ccfbf1;
-    font-size: 10.5px;
-    color: var(--primary);
-}
-
-/* --- Admin Portal Elements --- */
+/* --- Admin Portal Styles --- */
 .admin-controls-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    gap: 6px;
+    margin-bottom: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .nav-tabs {
     display: flex;
-    gap: 4px;
-    margin-bottom: 10px;
+    gap: 6px;
+    margin-bottom: 12px;
 }
 
 .tab-btn {
     flex: 1;
     background: #e2e8f0;
     border: none;
-    padding: 8px;
+    padding: 9px;
     border-radius: 8px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 600;
     cursor: pointer;
     color: #475569;
@@ -402,26 +566,40 @@ main {
     color: white;
 }
 
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
 
 .cards-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .card {
     background: white;
     border: 1px solid var(--border-color);
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     text-align: left;
 }
 
-.card h4 { font-size: 10.5px; color: #64748b; margin-bottom: 2px; }
-.card p { font-size: 16px; font-weight: 700; color: var(--primary); }
+.card h4 {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.card p {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
 
 .table-container {
     background: white;
@@ -434,16 +612,21 @@ table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 11px;
+    font-size: 11.5px;
 }
 
 th, td {
-    padding: 9px 10px;
+    padding: 10px;
     border-bottom: 1px solid #f1f5f9;
 }
 
-th { background: #f8fafc; color: #475569; font-weight: 600; }
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
 
+/* Badges & Status */
 .badge {
     padding: 3px 6px;
     border-radius: 4px;
@@ -453,11 +636,13 @@ th { background: #f8fafc; color: #475569; font-weight: 600; }
 .badge-pending { background: #fef9c3; color: #854d0e; }
 .badge-confirmed, .badge-completed { background: #dcfce7; color: #166534; }
 
-/* Login Overlay */
+/* Login Overlay Styles */
 #loginOverlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: var(--primary);
     display: flex;
     justify-content: center;
@@ -468,23 +653,23 @@ th { background: #f8fafc; color: #475569; font-weight: 600; }
 .login-box {
     background: white;
     padding: 24px;
-    border-radius: 16px;
+    border-radius: 14px;
     width: 90%;
-    max-width: 330px;
+    max-width: 340px;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .login-box h2 {
-    font-size: 18px;
-    color: var(--text-main);
     margin-bottom: 4px;
+    font-size: 18px;
+    color: #1e293b;
 }
 
 .login-box p {
     font-size: 11px;
     color: #64748b;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 .login-box select,
@@ -509,6 +694,23 @@ th { background: #f8fafc; color: #475569; font-weight: 600; }
     font-weight: 700;
     cursor: pointer;
     font-size: 13px;
+}
+
+/* Responsive Mobile Adjustments */
+@media (max-width: 500px) {
+    .action-buttons-grid, .features-footer-grid, .cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .clinic-details-box {
+        flex-direction: column;
+    }
+    .clinic-img-container {
+        width: 100%;
+        max-height: 140px;
+    }
+    .clinic-info-content {
+        width: 100%;
+    }
 }
 
 footer {
