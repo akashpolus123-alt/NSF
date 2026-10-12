@@ -778,3 +778,30 @@ footer {
     margin-top: 20px;
 }
 
+/* --- Fix Login Overlay & Clickable Button --- */
+#loginOverlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 118, 110, 0.95) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important;
+}
+
+.login-box {
+    position: relative !important;
+    z-index: 1000000 !important;
+    background: #ffffff !important;
+    pointer-events: auto !important;
+}
+
+.login-box button {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1000001 !important;
+}
