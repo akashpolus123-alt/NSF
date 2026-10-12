@@ -191,8 +191,18 @@
             const role = document.getElementById('loginRole').value;
             const pass = document.getElementById('adminPassword').value.trim();
 
-            // Simple aur direct password validation
-            if (pass === "nsf123" || pass === "nsf1234" || pass === "nsf12345") {
+            let isAuthenticated = false;
+
+            // Explicit role-based password verification
+            if (role === 'Receptionist' && pass === 'nsf123') {
+                isAuthenticated = true;
+            } else if (role === 'Admin' && pass === 'nsf1234') {
+                isAuthenticated = true;
+            } else if (role === 'Finance' && pass === 'nsf12345') {
+                isAuthenticated = true;
+            }
+
+            if (isAuthenticated) {
                 document.getElementById('loginOverlay').style.display = 'none';
                 if (role === 'Receptionist') {
                     openSpecificTab('appointments', 'Receptionist Portal - Appointments', 'Manage Patient Arrivals & Follow-ups');
@@ -202,7 +212,7 @@
                     openSpecificTab('finance', 'Finance Department Portal', 'Manage Payments & Revenue Statements');
                 }
             } else {
-                alert('Ghalat password! Baraye meharbani theek password darj karein (e.g., nsf123).');
+                alert('Ghalat password ya role selection! Baraye meharbani sahi password darj karein:\n- Receptionist: nsf123\n- Admin: nsf1234\n- Finance: nsf12345');
             }
         }
 
@@ -300,8 +310,8 @@
         }
 
         function saveFollowUpReminder(index) {
-            const dateInput = document.getElementById(`fDate_${index}`).value;
-            const daysInput = document.getElementById(`rDays_${index}`).value;
+            const dateInput = document.getElementById(fDate_${index}).value;
+            const daysInput = document.getElementById(rDays_${index}).value;
 
             if (!dateInput) {
                 alert('Please select a follow-up date first.');
