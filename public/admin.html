@@ -193,7 +193,6 @@
 
             let isAuthenticated = false;
 
-            // Explicit role-based password verification
             if (role === 'Receptionist' && pass === 'nsf123') {
                 isAuthenticated = true;
             } else if (role === 'Admin' && pass === 'nsf1234') {
@@ -212,7 +211,7 @@
                     openSpecificTab('finance', 'Finance Department Portal', 'Manage Payments & Revenue Statements');
                 }
             } else {
-                alert('Ghalat password ya role selection! Baraye meharbani sahi password darj karein:\n- Receptionist: nsf123\n- Admin: nsf1234\n- Finance: nsf12345');
+                alert('Ghalat password! Baraye meharbani theek password darj karein:\n- Receptionist: nsf123\n- Admin: nsf1234\n- Finance: nsf12345');
             }
         }
 
